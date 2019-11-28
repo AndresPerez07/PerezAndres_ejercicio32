@@ -17,5 +17,9 @@ fig = plt.figure(figsize=(15,10))
 ax = fig.add_subplot(131)
 ax.imshow(data, aspect="auto")
 
-plt.show()
-plt.savefig("wave_eq.png")
+ax2 = fig.add_subplot(132)
+tiempos = [0, 50, 100, 200, 300, 400, 500, 600, -1]
+for tiempo in tiempos:
+    ax2.plot(x,data[tiempo])
+
+plt.savefig("resultados.png")
