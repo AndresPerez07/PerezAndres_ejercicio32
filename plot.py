@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 #%%
 
@@ -11,22 +10,12 @@ size_x = np.shape(data)[1]
 size_y = np.shape(data)[0]
 
 x = np.linspace(0,1, size_x)
-y = np.linspace(0,size_y, size_y)
 
 #%%
-plt.plot(x,data[-1])
-plt.show()
-#%%
-X, Y = np.meshgrid(x,y)
 
-np.shape(y)
-
-fig = plt.figure(figsize=(10,10))
-ax = fig.gca(projection='3d')
-
-surf = ax.plot_surface(X,Y,data, cmap='inferno', antialiased=False)
-ax.set_xlabel("x")
-ax.set_ylabel("t")
-ax.set_zlabel("y")
+fig = plt.figure(figsize=(15,10))
+ax = fig.add_subplot(131)
+ax.imshow(data, aspect="auto")
 
 plt.show()
+plt.savefig("wave_eq.png")
