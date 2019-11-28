@@ -4,23 +4,27 @@
 
 using namespace std;
 
-void initial_cond(float *v, int N);
-void copia(float *a, float *b, int N);
-void escribe(float *v, int N);
+void initial_cond(double *v, int N);
+void copia(double *a, double *b, int N);
+void escribe(double *v, int N);
+
+double PI = 3.1415923565;
 
 int main() {
-  float L = 1000.0;
-  float rho = 0.01;
-  float T = 40.0;
-  float c = sqrt(T/rho);
-  float c1 = c;
-  float ratio = c*c/(c1*c1);
+  double L = 1.0;
+  double rho = 0.01;
+  double T = 40.0;
+  double c = sqrt(T/rho);
+  double c1 = c;
+  double ratio = c*c/(c1*c1);
   int Nx = 101;
-  int Nt = 100;
+  double tmax = 0.1;
+  double dx = 1.0/100.0;
+  double dt = dx/c1;
 
-  float *pasado = new float [Nx];
-  float *presente = new float [Nx];
-  float *futuro = new float [Nx];
+  double *pasado = new double [Nx];
+  double *presente = new double [Nx];
+  double *futuro = new double [Nx];
 
   initial_cond(pasado, Nx);
 
@@ -32,12 +36,12 @@ int main() {
   }
   escribe(presente,Nx);
 
-  int t = 1;
+  double t = dt;
 
   futuro[0] = 0.0;
   futuro[-1] = 0.0;
 
-  while(t < Nt){
+  while(t < tmax){
     for (size_t i = 1; i < Nx-1; i++) {
       futuro[i] = 2.0*presente[i] - pasado[i] + ratio*(presente[i+1] + presente[i-1] - 2.0*presente[i]);
     }
@@ -46,22 +50,17 @@ int main() {
     copia(presente, pasado, Nx);
     copia(futuro, presente, Nx);
 
-    t ++;
+    t = t + dt;
   }
 
   return 0;
 }
-void initial_cond(float *v, int N){
+void initial_cond(double *v, int N){
   for (size_t i = 0; i < N; i++) {
-    if(i < int(0.80*N)+1){
-      v[i] = 0.00125*i;
-    }
-    else{
-      v[i] = 0.1 - 0.005*(i-int(0.80*N));
-    }
+    v[i] = 1E-4 * sin(0.02*PI*i);
   }
 }
-void escribe(float *v, int N){
+void escribe(double *v, int N){
   ofstream file;
   file.open("cuerda.dat", fstream::app);
   for (size_t i = 0; i < N; i++) {
@@ -70,7 +69,7 @@ void escribe(float *v, int N){
   file << endl;
   file.close();
 }
-void copia(float *a, float *b, int N){
+void copia(double *a, double *b, int N){
   for (size_t i = 0; i < N; i++) {
     b[i] = a[i];
   }
