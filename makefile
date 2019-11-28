@@ -1,4 +1,4 @@
-wave_eq.png.png: cuerda.dat plot.py
+wave_eq.png: cuerda.dat plot.py
 	python plot.py
 cuerda.dat: cuerda.x
 	./cuerda.x > cuerda.dat
